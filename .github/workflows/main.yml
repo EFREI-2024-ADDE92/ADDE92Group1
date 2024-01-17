@@ -32,3 +32,7 @@ jobs:
     - name: Deploy to Azure Container Apps
       run: |
         az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --name projetdevopsgp1 --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest --cpu 1 --memory 1 --registry-login-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --dns-name-label projetdevopsgp1 --ports 80
+
+    - name: Show the URL
+      run: |
+        echo http://$(az container show --resource-group ${{ secrets.RESOURCE_GROUP }} --name projetdevopsgp1 --query ipAddress.fqdn --output tsv)
