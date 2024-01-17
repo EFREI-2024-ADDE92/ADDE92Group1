@@ -2,8 +2,9 @@ import joblib
 import numpy as np
 from flask import Flask, jsonify
 from flask_cors import CORS
+from sklearn.datasets import load_iris
 
-from Model import iris
+iris = load_iris()
 
 app = Flask(__name__)
 CORS(app)
@@ -31,4 +32,4 @@ def predict(sl, sw, pl, pw):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
