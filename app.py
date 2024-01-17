@@ -7,12 +7,11 @@ app = Flask(__name__)
 # Load the pre-trained model
 model = joblib.load('trained_model.joblib')
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict/<sl>/<sw>/<pl>/<pw>', methods=['POST'])
+def predict(sl, sw, pl, pw):
     try:
         # Get the input data from the request
-        data = request.get_json(force=True)
-        features = np.array(data['features']).reshape(1, -1)
+        features = np.array([[sl, sw, pl, pw]])
 
         # Make predictions using the loaded model
         prediction = model.predict(features)
