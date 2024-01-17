@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
