@@ -42,9 +42,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }} 
-    - name : make env container app
-      run: |
-       az containerapp env create -n ${{env.CONTAINER_APP_ENV}} -g ${{env.RESOURCE_GROUP}} --location ${{env.LOCATION}}
+
     - name: Deploy to Azure Container App
-      run: |
-        az containerapp create -n ${{ env.CONTAINER_APP_NAME }} -g ${{ env.RESOURCE_GROUP }} --image ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest --environment ${{ env.CONTAINER_APP_ENV }} --ingress external --target-port 80
+      run : az containerapp up --name ${{env.CONTAINER_APP_NAME }} --source . --ingress external
