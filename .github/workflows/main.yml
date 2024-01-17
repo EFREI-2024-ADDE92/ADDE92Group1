@@ -14,6 +14,8 @@ env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   Docker_Name : projetdevopsg1
   env_name : envg1
+  location : francecentral
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -26,6 +28,12 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
+    - name: Login to ACR
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
         
     - name: Build and push image
       run: |
@@ -36,7 +44,7 @@ jobs:
       run: az acr login --name ${{ env.REGISTRY_LOGIN_SERVER }}
 
     - name: Create Azure container environment
-      run: az containerapp env create -n ${{ env.env_name }}-env -g ${{ env.RESOURCE_GROUP }} --location francecentral
+      run: az containerapp env create -n ${{ env.env_name }}-env -g ${{ env.RESOURCE_GROUP }} --location ${{ env.location }}}
 
     - name: Deploy to Azure Container
       run: |
