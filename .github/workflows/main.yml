@@ -36,7 +36,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
+        tags: ${{ env.IMAGE_NAME }}:latest
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -47,4 +47,4 @@ jobs:
        az containerapp env create -n ${{env.CONTAINER_APP_ENV}} -g ${{env.RESOURCE_GROUP}} --location ${{env.LOCATION}}
     - name: Deploy to Azure Container App
       run: |
-        az containerapp create -n ${{ env.CONTAINER_APP_NAME }} -g ${{ env.RESOURCE_GROUP }} --image ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest --environment ${{ env.CONTAINER_APP_ENV }} --ingress external --target-port 80
+        az containerapp create -n ${{ env.CONTAINER_APP_NAME }} -g ${{ env.RESOURCE_GROUP }} --image ${{ env.IMAGE_NAME }}:latest --environment ${{ env.CONTAINER_APP_ENV }} --ingress external --target-port 80
