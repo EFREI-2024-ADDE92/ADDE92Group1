@@ -45,4 +45,4 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          az container create --name projetdevopsgp1 --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest --dns-name-label projetdevopsgp1 --ports 80
+          az containerapp up --name projetdevopsgp1 --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest --dns-name-label projetdevopsgp1 --resource-group <your-resource-group>
