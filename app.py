@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
-
+from Model import iris
 app = Flask(__name__)
 
 # Load the pre-trained model
@@ -17,7 +17,9 @@ def predict(sl, sw, pl, pw):
         prediction = model.predict(features)
 
         # Return the prediction as JSON
-        result = {'prediction': int(prediction[0])}
+        retour = iris.target_names[prediction[0]]
+        result = {'prediction': retour}
+        
         return jsonify(result)
 
     except Exception as e:
