@@ -15,6 +15,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Set active Azure subscription
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          az account set --subscription 765266c6-9a23-4638-af32-dd1e32613047
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
