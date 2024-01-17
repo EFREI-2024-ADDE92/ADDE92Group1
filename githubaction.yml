@@ -1,0 +1,30 @@
+name: Deploy to Azure
+
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/ProjetDevOpsGp1:latest
+        secrets: |
+          registry-password=${{ secrets.REGISTRY_PASSWORD }}
+          registry-username=${{ secrets.REGISTRY_USERNAME }}
+
+    - name: Deploy to Azure Container Apps
+      run: |
+        az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --name ProjetDevOpsGp1 --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/ProjetDevOpsGp1:latest --cpu 1 --memory 1 --registry-login-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --dns-name-label ProjetDevOpsGp1 --ports 80
