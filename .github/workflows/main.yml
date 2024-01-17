@@ -43,6 +43,6 @@ jobs:
     - name: Create Azure Container App
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.0.72
+        azcliversion: 2.56.0
         inlineScript: |
           az containerapp create --name projetdevopsgp1 --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest --dns-name-label projetdevopsgp1 --resource-group ADDE92-CTP
