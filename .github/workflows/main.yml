@@ -1,4 +1,5 @@
-name: Deploy to Azure Container App
+
+
 
 on:
   push:
@@ -6,42 +7,39 @@ on:
       - main
 
 env:
-  REGISTRY_NAME: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-  IMAGE_NAME: projetdevopsg1 
-  RESOURCE_GROUP: ADDE92-CTP
-  CONTAINER_APP_NAME: containerappg1  
-  CONTAINER_APP_ENV: Envg1
-  LOCATION: westeurope  
-
+  REGISTRY_LOGIN_SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+  REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  Docker_Name : projetdevopsg1
+  env_name : envg1
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Login to Azure Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ${{ env.REGISTRY_NAME }}
-        username: ${{ secrets.REGISTRY_USERNAME }}  
-        password: ${{ secrets.REGISTRY_PASSWORD }}  
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
-
-    - name: Login to Azure
+    - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }} 
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        
+    - name: Build and push image
+      run: |
+        docker build . -t ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.Docker_Name }}:v1
+        docker push ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.Docker_Name }}:v1
 
-    - name: Deploy to Azure Container App
-      run : az containerapp up --name ${{env.CONTAINER_APP_NAME }} --source . --ingress external
+    - name: Login to ACR
+      run: az acr login --name ${{ env.REGISTRY_LOGIN_SERVER }}
+
+    - name: Create Azure container environment
+      run: az containerapp env create -n ${{ env.env_name }}-env -g ${{ env.RESOURCE_GROUP }} --location francecentral
+
+    - name: Deploy to Azure Container
+      run: |
+        az containerapp create --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.env_name }} --image ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.Docker_Name }}:v1 --cpu 1 --memory 2 --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --ingress external --target-port 5000 --environment ${{ env.env_name}}
+
+    
