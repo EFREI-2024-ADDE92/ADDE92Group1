@@ -10,7 +10,8 @@ env:
   IMAGE_NAME: projetdevopsg1 
   RESOURCE_GROUP: ADDE92-CTP
   CONTAINER_APP_NAME: containerappg1  
-  CONTAINER_APP_ENV: Envg1  
+  CONTAINER_APP_ENV: Envg1
+  LOCATION: westeurope  
 
 jobs:
   build-and-deploy:
@@ -41,7 +42,9 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }} 
-
+    - name : make env container app
+      run: |
+       az containerapp env create -n ${{env.CONTAINER_APP_ENV}} -g ${{env.RESOURCE_GROUP}} --location ${{env.LOCATION}}
     - name: Deploy to Azure Container App
       run: |
         az containerapp create -n ${{ env.CONTAINER_APP_NAME }} -g ${{ env.RESOURCE_GROUP }} --image ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest --environment ${{ env.CONTAINER_APP_ENV }} --ingress external --target-port 80
