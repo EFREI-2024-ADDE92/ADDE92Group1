@@ -43,8 +43,16 @@ jobs:
     - name: Login to ACR
       run: az acr login --name ${{ env.REGISTRY_LOGIN_SERVER }}
 
+    - name: Check if environment exists
+      id: check_env
+      continue-on-error: true
+      run: az containerapp env show -n ${{ env.env_name }} -g ${{ env.RESOURCE_GROUP }}
+    
     - name: Create Azure container environment
-      run: az containerapp env create -n ${{ env.env_name }} -g ${{ env.RESOURCE_GROUP }} --location ${{ env.location }}
+      run: |
+        if [ "${{ steps.check_env.outcome }}" == "failure" ]; then
+          az containerapp env create -n ${{ env.env_name }} -g ${{ env.RESOURCE_GROUP }} --location ${{ env.location }}
+        fi
 
     - name: Deploy to Azure Container
       run: |
