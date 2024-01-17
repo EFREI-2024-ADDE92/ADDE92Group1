@@ -46,4 +46,9 @@ jobs:
       with:
         azcliversion: 2.56.0
         inlineScript: |
-          az containerapp up --name projetdevopsgp1 --resource-group ADDE92-CTP --environment 'G1env'
+         az containerapp create -n my-containerapp \
+          -g ADDE92-CTP \
+          --image projetdevopsgp1:latest \
+          --environment MyContainerappEnv \
+          --ingress external --target-port 80 
+
