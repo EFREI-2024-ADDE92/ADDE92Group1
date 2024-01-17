@@ -1,8 +1,12 @@
-from flask import Flask, request, jsonify
 import joblib
 import numpy as np
+from flask import Flask, jsonify
+from flask_cors import CORS
+
 from Model import iris
+
 app = Flask(__name__)
+CORS(app)
 
 # Load the pre-trained model
 model = joblib.load('trained_model.joblib')
