@@ -15,15 +15,19 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+        - name: Login to Docker
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: .
         push: true
         tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest
-        secrets: |
-          registry-password=${{ secrets.REGISTRY_PASSWORD }}
-          registry-username=${{ secrets.REGISTRY_USERNAME }}
 
     - name: Deploy to Azure Container Apps
       run: |
