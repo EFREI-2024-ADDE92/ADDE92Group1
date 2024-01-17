@@ -44,7 +44,7 @@ jobs:
       run: az acr login --name ${{ env.REGISTRY_LOGIN_SERVER }}
 
     - name: Create Azure container environment
-      run: az containerapp env create -n ${{ env.env_name }}-env -g ${{ env.RESOURCE_GROUP }} --location ${{ env.location }}
+      run: az containerapp env create -n ${{ env.env_name }} -g ${{ env.RESOURCE_GROUP }} --location ${{ env.location }}
 
     - name: Deploy to Azure Container
       run: |
