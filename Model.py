@@ -21,3 +21,6 @@ print(f"Accuracy: {accuracy}")
 
 # Save the trained model to a file using joblib.dump
 joblib.dump(model, 'trained_model.joblib')
+
+
+#TTTTESSSSTT
