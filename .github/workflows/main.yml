@@ -40,9 +40,16 @@ jobs:
         push: true
         tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/projetdevopsgp1:latest
 
+    - name: Create Managed Environment
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.56.0
+        inlineScript: |
+          az app create-environment --name G1env --resource-group ADDE92-CTP --location francecentral 
+
     - name: Create Azure Container App
       uses: azure/CLI@v1
       with:
         azcliversion: 2.56.0
         inlineScript: |
-          az containerapp create --name projetdevopsgp1 --resource-group ADDE92-CTP --environment prodenv
+          az containerapp create --name projetdevopsgp1 --resource-group ADDE92-CTP --environment G1env
