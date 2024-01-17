@@ -45,4 +45,4 @@ jobs:
       with:
         azcliversion: 2.56.0
         inlineScript: |
-          az containerapp create --name projetdevopsgp1 --resource-group ADDE92-CTP
+          az containerapp create --name projetdevopsgp1 --resource-group ADDE92-CTP --environment prodenv
