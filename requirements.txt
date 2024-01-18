@@ -4,3 +4,5 @@ numpy
 pandas
 joblib
 flask-cors
+prometheus-client
+prometheus-flask-exporter
