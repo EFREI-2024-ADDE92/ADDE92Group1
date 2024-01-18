@@ -10,7 +10,7 @@ env:
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   Docker_Name : projetdevopsg1
-  env_name : envgrp1-v1
+  env_name : envgrp1-v2
   location : francecentral
 
 jobs:
