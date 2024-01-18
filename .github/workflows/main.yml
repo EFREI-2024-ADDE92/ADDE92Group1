@@ -62,7 +62,7 @@ jobs:
 
     - name: Set autoscaling rules
       run: |
-        az containerapp update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ProjetDevOpsGp1 --scale-rule-name http-scaling --scale-rule-http-concurrency 1
+        az containerapp update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.env_name }} --scale-rule-name http-scaling --scale-rule-http-concurrency 1
 
 
     
