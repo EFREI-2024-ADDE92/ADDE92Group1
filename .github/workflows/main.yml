@@ -2,7 +2,8 @@ on:
   push:
     branches:
       - main
-
+on: 
+  workflow_dispatch
 env:
   REGISTRY_LOGIN_SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
